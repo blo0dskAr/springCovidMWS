@@ -29,12 +29,12 @@ public class SchedulerConfig {
 
   @Scheduled(fixedDelay = 1000 * 60 * 60)
   public void runFileHandlingScheduler() {
-    FileUtils.checkAndCreateFolder(GesamtStat.FILEPATH);
-    FileUtils.saveDataFile(GesamtStat.FETCHURL, GesamtStat.FILEPATH);
+    //FileUtils.checkAndCreateFolder(GesamtStat.FILEPATH);
+    //FileUtils.saveDataFile(GesamtStat.FETCHURL, GesamtStat.FILEPATH);
     gesamtStatService.initializeCSV(GesamtStat.FILEPATH);
 
-    FileUtils.checkAndCreateFolder(KrankenhausStat.FILEPATH);
-    FileUtils.saveDataFile(KrankenhausStat.FETCHURL, KrankenhausStat.FILEPATH);
+    //FileUtils.checkAndCreateFolder(KrankenhausStat.FILEPATH);
+    //FileUtils.saveDataFile(KrankenhausStat.FETCHURL, KrankenhausStat.FILEPATH);
     krankenhausStatService.initializeCSV(KrankenhausStat.FILEPATH);
   }
 }

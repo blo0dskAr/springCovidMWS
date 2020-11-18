@@ -1,13 +1,11 @@
 package at.blo0dy.springCovidMWS.service;
 
-import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.model.KrankenhausStat;
 import at.blo0dy.springCovidMWS.repository.KrankenhausStatRepository;
 import at.blo0dy.springCovidMWS.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service("krankenhausStatService")

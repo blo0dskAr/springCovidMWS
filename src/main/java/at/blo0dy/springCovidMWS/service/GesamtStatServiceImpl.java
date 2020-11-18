@@ -4,11 +4,8 @@ import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.repository.GesamtStatRepository;
 import at.blo0dy.springCovidMWS.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -17,9 +14,7 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service("gesamtStatService")
 @Slf4j
@@ -42,7 +37,7 @@ public class GesamtStatServiceImpl implements StatService {
             "AnzahlGeheiltTaeglich",	"AnzahlGeheiltSum" };
 
     List<GesamtStat> statList = new ArrayList<>();
-    Date datum = new Date();
+    Date datum = null;
 
     log.debug("GesamtStat-CSV wird verarbeitet");
 
@@ -50,12 +45,13 @@ public class GesamtStatServiceImpl implements StatService {
       Iterable<CSVRecord> records = FileUtils.readSemikolonSeparatedCSV(filePath, headers);
       for (CSVRecord record : records) {
         try {
+//          datum = LocalDate.parse(record.get("Time"));
           datum = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(record.get("Time"));
         } catch (ParseException e) {
           log.warn("ParseException caught:");
           log.error(e.getMessage());
         }
-        String bundesland = record.get("Bundesland");
+        String bundesland = record.get("Bundesland").toLowerCase();
         int anzahlEinwohner = Integer.parseInt(record.get("AnzEinwohner"));
         int anzahlNeueFaelle = Integer.parseInt(record.get("AnzahlFaelle"));
         int anzahlFaelleGesamt = Integer.parseInt(record.get("AnzahlFaelleSum"));
@@ -91,6 +87,30 @@ public class GesamtStatServiceImpl implements StatService {
     return gesamtStatRepository.findLatestSavedDatum();
   }
 
+
+
+  public Map<Date, Integer> findNeueFaelleByBundesland(String bundesland) {
+    List<Object[]> myList =  gesamtStatRepository.findNeueFaelleByBundesland(bundesland.toLowerCase());
+
+    Map<Date, Integer> data = new TreeMap<Date, Integer>();
+
+    Date datum = null;
+    for (Object[] o : myList) {
+      try {
+        datum = new SimpleDateFormat("yyyy-MM-dd").parse(o[0].toString());
+      } catch (ParseException e) {
+        log.warn("Parse Exception from dataBase caught");
+        e.getMessage();
+      }
+      Integer anzahl = Integer.parseInt(o[1].toString());
+      if (datum != null) {
+        data.put(datum, anzahl);
+      }
+    }
+
+    log.info(data.toString());
+    return data ;
+  }
 
 
 }

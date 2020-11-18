@@ -1,5 +1,6 @@
 package at.blo0dy.springCovidMWS.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
