@@ -24,6 +24,7 @@ public class GesamtStat {
 
   @Column(name = "datum")
   @Temporal(TemporalType.DATE)
+  @JsonFormat(pattern = "dd.MM.yyyy")
   private Date datum;
   @Column(name = "bundesland")
   private String bundesland;

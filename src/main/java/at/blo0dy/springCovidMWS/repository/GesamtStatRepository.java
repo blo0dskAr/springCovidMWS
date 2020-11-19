@@ -16,8 +16,18 @@ public interface GesamtStatRepository extends CrudRepository<GesamtStat, Long> {
          nativeQuery = true)
   Date findLatestSavedDatum();
 
+
   @Query(value = "select gs.datum, gs.anzahl_neue_faelle from gesamt_stat gs" +
                  " where gs.bundesland = ?1 " +
                  " order by gs.datum ; ", nativeQuery = true)
   List<Object[]> findNeueFaelleByBundesland(String bundesland);
+
+
+  @Query(value = "select * from gesamt_stat gs ;", nativeQuery = true)
+  List<GesamtStat> findGesamtStatData();
+
+
+  @Query(value ="select * from gesamt_stat gs " +
+                " where gs.bundesland = ?1 ; ", nativeQuery = true)
+  List<GesamtStat> findGesamtStatDataByBundesland(String bundesland);
 }

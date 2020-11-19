@@ -2,9 +2,7 @@ package at.blo0dy.springCovidMWS.config;
 
 import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.model.KrankenhausStat;
-import at.blo0dy.springCovidMWS.service.GesamtStatServiceImpl;
-import at.blo0dy.springCovidMWS.service.StatService;
-import at.blo0dy.springCovidMWS.utils.FileUtils;
+import at.blo0dy.springCovidMWS.service.stats.StatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;

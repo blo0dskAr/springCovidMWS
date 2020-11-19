@@ -1,11 +1,13 @@
-package at.blo0dy.springCovidMWS.service;
+package at.blo0dy.springCovidMWS.service.stats.gesamtStats;
 
 import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.repository.GesamtStatRepository;
+import at.blo0dy.springCovidMWS.service.stats.StatService;
 import at.blo0dy.springCovidMWS.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -18,7 +20,7 @@ import java.util.*;
 
 @Service("gesamtStatService")
 @Slf4j
-public class GesamtStatServiceImpl implements StatService {
+public class GesamtStatServiceImpl implements StatService, GesamtStatService {
 
   GesamtStatRepository gesamtStatRepository;
 
@@ -83,12 +85,13 @@ public class GesamtStatServiceImpl implements StatService {
     log.debug("GesamtStat-CSV-Verarbeitung abgeschlossen.");
   }
 
+  @Override
   public Date findLatestSavedDatum() {
     return gesamtStatRepository.findLatestSavedDatum();
   }
 
 
-
+  @Override
   public Map<Date, Integer> findNeueFaelleByBundesland(String bundesland) {
     List<Object[]> myList =  gesamtStatRepository.findNeueFaelleByBundesland(bundesland.toLowerCase());
 
@@ -99,7 +102,7 @@ public class GesamtStatServiceImpl implements StatService {
       try {
         datum = new SimpleDateFormat("yyyy-MM-dd").parse(o[0].toString());
       } catch (ParseException e) {
-        log.warn("Parse Exception from dataBase caught");
+        log.warn("Parse Exception from dataBase caught (Date)");
         e.getMessage();
       }
       Integer anzahl = Integer.parseInt(o[1].toString());
@@ -107,9 +110,17 @@ public class GesamtStatServiceImpl implements StatService {
         data.put(datum, anzahl);
       }
     }
-
-    log.info(data.toString());
     return data ;
+  }
+
+  @Override
+  public List<GesamtStat> findGesamtStatData() {
+    return gesamtStatRepository.findGesamtStatData() ;
+  }
+
+  @Override
+  public List<GesamtStat> findGesamtStatDataByBundesland(String bundesland) {
+    return gesamtStatRepository.findGesamtStatDataByBundesland(bundesland);
   }
 
 
