@@ -33,6 +33,16 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   @Override
   public void initializeCSV(Path filePath) {
 
+    int anzahlEinwohner, anzahlNeueFaelle, anzahlFaelleGesamt, anzahlFaelle7Tage, anzahlNeueTote, anzahlToteGesamt, anzahlGeheilt, anzahlGeheiltGesamt;
+    int diffNeueFaelle = 0;
+    int diffNeueTote = 0;
+    int diffGeheilt  = 0 ;
+    int diffFaelle7Tage = 0;
+    BigDecimal inzidenz7Tage;
+    BigDecimal diffInzidenz7Tage = BigDecimal.ZERO;
+
+    GesamtStat oldGesamtStat;
+
     DateTimeFormatter formatterwithTime = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     final String[] headers = { "Time",	"Bundesland",	"BundeslandID",	"AnzEinwohner",	"AnzahlFaelle",	"AnzahlFaelleSum",
             "AnzahlFaelle7Tage",	"SiebenTageInzidenzFaelle",	"AnzahlTotTaeglich",	"AnzahlTotSum",
@@ -54,18 +64,30 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
           log.error(e.getMessage());
         }
         String bundesland = record.get("Bundesland").toLowerCase();
-        int anzahlEinwohner = Integer.parseInt(record.get("AnzEinwohner"));
-        int anzahlNeueFaelle = Integer.parseInt(record.get("AnzahlFaelle"));
-        int anzahlFaelleGesamt = Integer.parseInt(record.get("AnzahlFaelleSum"));
-        int anzahlFaelle7Tage = Integer.parseInt(record.get("AnzahlFaelle7Tage"));
-        BigDecimal inzidenz7Tage = BigDecimal.valueOf(Double.valueOf(record.get("SiebenTageInzidenzFaelle").replaceAll(",", ".")));
-        int anzahlNeueTote = Integer.parseInt(record.get("AnzahlTotTaeglich"));
-        int anzahlToteGesamt = Integer.parseInt(record.get("AnzahlTotSum"));
-        int anzahlGeheilt = Integer.parseInt(record.get("AnzahlGeheiltTaeglich"));
-        int anzahlGeheiltSum = Integer.parseInt(record.get("AnzahlGeheiltSum"));
+        anzahlEinwohner = Integer.parseInt(record.get("AnzEinwohner"));
+        anzahlNeueFaelle = Integer.parseInt(record.get("AnzahlFaelle"));
+        anzahlFaelleGesamt = Integer.parseInt(record.get("AnzahlFaelleSum"));
+        anzahlFaelle7Tage = Integer.parseInt(record.get("AnzahlFaelle7Tage"));
+        inzidenz7Tage = BigDecimal.valueOf(Double.valueOf(record.get("SiebenTageInzidenzFaelle").replaceAll(",", ".")));
+        anzahlNeueTote = Integer.parseInt(record.get("AnzahlTotTaeglich"));
+        anzahlToteGesamt = Integer.parseInt(record.get("AnzahlTotSum"));
+        anzahlGeheilt = Integer.parseInt(record.get("AnzahlGeheiltTaeglich"));
+        anzahlGeheiltGesamt = Integer.parseInt(record.get("AnzahlGeheiltSum"));
 
-        statList.add(new GesamtStat(datum, bundesland, anzahlEinwohner, anzahlNeueFaelle, anzahlFaelleGesamt,
-                anzahlFaelle7Tage, inzidenz7Tage, anzahlNeueTote, anzahlToteGesamt, anzahlGeheilt, anzahlGeheiltSum));
+        try {
+          oldGesamtStat = findLastOccurenceByBundesland(statList, bundesland);
+          diffNeueFaelle = anzahlNeueFaelle - oldGesamtStat.getAnzahlNeueFaelle();
+          diffFaelle7Tage = anzahlFaelle7Tage - oldGesamtStat.getAnzahlFaelle7Tage();
+          diffInzidenz7Tage = inzidenz7Tage.subtract(oldGesamtStat.getInzidenz7Tage());
+          diffNeueTote = anzahlNeueTote - oldGesamtStat.getAnzahlNeueTote();
+          diffGeheilt = anzahlGeheilt - oldGesamtStat.getAnzahlGeheilt();
+        } catch (NullPointerException e) {
+          log.info("Noch keine Datensätze für Bundesland(" + bundesland + ") gefunden. Default=0 wird verwendet");
+        }
+
+
+        statList.add(new GesamtStat(datum, bundesland, anzahlEinwohner, anzahlNeueFaelle, diffNeueFaelle, anzahlFaelleGesamt,
+                anzahlFaelle7Tage, diffFaelle7Tage, inzidenz7Tage, diffInzidenz7Tage, anzahlNeueTote, diffNeueTote, anzahlToteGesamt, anzahlGeheilt, diffGeheilt, anzahlGeheiltGesamt));
       }
     } catch (IOException e) {
       log.warn("IOException caught:");
@@ -88,6 +110,16 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   @Override
   public Date findLatestSavedDatum() {
     return gesamtStatRepository.findLatestSavedDatum();
+  }
+
+  @Override
+  public GesamtStat findLastOccurenceByBundesland(List<GesamtStat> statlist, String bundesland) {
+    for ( int i = statlist.size() - 1;  i >= 0; i-- ) {
+      if (statlist.get(i).getBundesland().equals(bundesland)) {
+        return statlist.get(i);
+      }
+    }
+    return null;
   }
 
 

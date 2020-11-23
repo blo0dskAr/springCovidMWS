@@ -16,4 +16,6 @@ public interface GesamtStatService {
 
   List<GesamtStat> findGesamtStatDataByBundesland(String bundesland);
 
+  GesamtStat findLastOccurenceByBundesland(List<GesamtStat> statlist, String bundesland);
+
 }
