@@ -9,16 +9,16 @@ import java.util.List;
 
 public interface KrankenhausStatRepository extends JpaRepository<KrankenhausStat, Long> {
 
-  @Query(value = "select max(bls.datum) from krankenhaus_stat bls",
+  @Query(value = "select max(ks.datum) from krankenhaus_stat ks",
           nativeQuery = true)
   Date findLatestSavedDatum();
 
-  @Query(value = "select * from krankenhaus_stat gs ;", nativeQuery = true)
+  @Query(value = "select * from krankenhaus_stat ks ;", nativeQuery = true)
   List<KrankenhausStat> findKrankenhausStatData();
 
 
-  @Query(value ="select * from krankenhaus_stat gs " +
-          " where gs.bundesland = ?1 ; ", nativeQuery = true)
+  @Query(value ="select * from krankenhaus_stat ks " +
+          " where ks.bundesland = ?1 ; ", nativeQuery = true)
   List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland);
 
 }

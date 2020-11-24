@@ -1,5 +1,6 @@
 package at.blo0dy.springCovidMWS.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class KrankenhausStat {
 
   @Column(name = "datum")
   @Temporal(TemporalType.DATE)
+  @JsonFormat(pattern = "dd.MM.yyyy")
   private Date datum;
   @Column(name = "bundesland")
   private String bundesland;
@@ -36,15 +38,15 @@ public class KrankenhausStat {
   @Column(name = "fz_icu_free")
   private int fzIcuFree;
   @Column(name = "diff_tests")
-  int diffTests = 0;
+  int diffTests;
   @Column(name = "diff_fz_hosp")
-  int diffFzHosp = 0;
+  int diffFzHosp;
   @Column(name = "diff_fz_icu")
-  int diffFzIcu = 0;
+  int diffFzIcu;
   @Column(name = "diff_hosp_gesamt")
-  int hospGesamt = 0;
+  int hospGesamt;
   @Column(name = "diff_icu_gesamt")
-  int icuGesamt = 0;
+  int icuGesamt ;
 
   public static final Path FILEPATH = Paths.get("H:/covidApp/CovidFallzahlen.csv");
   public static final Path FILENAME = FILEPATH.getFileName();

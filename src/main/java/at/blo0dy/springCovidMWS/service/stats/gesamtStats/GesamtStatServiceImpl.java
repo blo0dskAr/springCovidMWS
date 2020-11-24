@@ -38,6 +38,7 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
     int diffNeueTote = 0;
     int diffGeheilt  = 0 ;
     int diffFaelle7Tage = 0;
+    int anzahl_aktive = 0;
     BigDecimal inzidenz7Tage;
     BigDecimal diffInzidenz7Tage = BigDecimal.ZERO;
 
@@ -81,13 +82,14 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
           diffInzidenz7Tage = inzidenz7Tage.subtract(oldGesamtStat.getInzidenz7Tage());
           diffNeueTote = anzahlNeueTote - oldGesamtStat.getAnzahlNeueTote();
           diffGeheilt = anzahlGeheilt - oldGesamtStat.getAnzahlGeheilt();
+          anzahl_aktive = anzahlFaelleGesamt-anzahlGeheiltGesamt-anzahlToteGesamt;
         } catch (NullPointerException e) {
           log.info("Noch keine Datensätze für Bundesland(" + bundesland + ") gefunden. Default=0 wird verwendet");
         }
 
 
-        statList.add(new GesamtStat(datum, bundesland, anzahlEinwohner, anzahlNeueFaelle, diffNeueFaelle, anzahlFaelleGesamt,
-                anzahlFaelle7Tage, diffFaelle7Tage, inzidenz7Tage, diffInzidenz7Tage, anzahlNeueTote, diffNeueTote, anzahlToteGesamt, anzahlGeheilt, diffGeheilt, anzahlGeheiltGesamt));
+        statList.add(new GesamtStat(datum, bundesland, anzahlEinwohner, anzahlNeueFaelle, diffNeueFaelle, anzahlFaelleGesamt, anzahlFaelle7Tage, diffFaelle7Tage,
+                inzidenz7Tage, diffInzidenz7Tage, anzahlNeueTote, diffNeueTote, anzahlToteGesamt, anzahlGeheilt, diffGeheilt, anzahlGeheiltGesamt, anzahl_aktive));
       }
     } catch (IOException e) {
       log.warn("IOException caught:");

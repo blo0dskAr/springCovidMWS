@@ -22,11 +22,11 @@ public interface GesamtStatRepository extends CrudRepository<GesamtStat, Long> {
   List<Object[]> findNeueFaelleByBundesland(String bundesland);
 
 
-  @Query(value = "select * from gesamt_stat ks ;", nativeQuery = true)
+  @Query(value = "select * from gesamt_stat gs ;", nativeQuery = true)
   List<GesamtStat> findGesamtStatData();
 
 
-  @Query(value ="select * from gesamt_stat ks " +
+  @Query(value ="select * from gesamt_stat gs " +
                 " where gs.bundesland = ?1 ; ", nativeQuery = true)
   List<GesamtStat> findGesamtStatDataByBundesland(String bundesland);
 }
