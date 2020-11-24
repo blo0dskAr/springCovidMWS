@@ -1,5 +1,6 @@
 package at.blo0dy.springCovidMWS.service.stats.krankenhausStats;
 
+import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.model.KrankenhausStat;
 import at.blo0dy.springCovidMWS.repository.KrankenhausStatRepository;
 import at.blo0dy.springCovidMWS.service.stats.StatService;
@@ -112,5 +113,15 @@ public class KrankenhausStatServiceImpl implements StatService, KrankenhausStatS
       }
     }
     return null;
+  }
+
+  @Override
+  public List<KrankenhausStat> findKrankenhausStatData() {
+    return krankenhausStatRepository.findKrankenhausStatData();
+  }
+
+  @Override
+  public List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland) {
+    return krankenhausStatRepository.findKrankenhausStatDataByBundesland(bundesland);
   }
 }

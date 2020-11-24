@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/covid/api")
+@RequestMapping("/covid/api/gesamt")
 public class GesamtStatController {
 
   @Qualifier("gesamtStatService")
