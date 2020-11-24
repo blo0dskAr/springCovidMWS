@@ -32,15 +32,25 @@ public class GesamtStatController {
     return gesamtStatService.findNeueFaelleByBundesland(bundesland) ;
   }
 
-  @GetMapping({"/v1/", "/v1"})
+  @GetMapping("/v1/getData")
   public List<GesamtStat> findGesamtStatData() {
     return gesamtStatService.findGesamtStatData() ;
   }
 
 
-  @GetMapping("/v1/{bundesland}")
+  @GetMapping("/v1/getData/{bundesland}")
   public List<GesamtStat> findGesamtStatDataByBundesland(@PathVariable("bundesland") String bundesland) {
     return gesamtStatService.findGesamtStatDataByBundesland(bundesland) ;
+  }
+
+  @GetMapping("v1/getLatestDate")
+  public Date findLatestDate() {
+    return gesamtStatService.findLatestSavedDatum();
+  }
+
+  @GetMapping("v1/getLatestDataBundeslaender")
+  public List<GesamtStat> findLatestGesamtStatDataForBundeslaender() {
+    return gesamtStatService.findLatestGesamtStatDataForBundeslaender();
   }
 
 

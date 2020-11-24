@@ -29,4 +29,10 @@ public interface GesamtStatRepository extends CrudRepository<GesamtStat, Long> {
   @Query(value ="select * from gesamt_stat gs " +
                 " where gs.bundesland = ?1 ; ", nativeQuery = true)
   List<GesamtStat> findGesamtStatDataByBundesland(String bundesland);
+
+
+  @Query(value = "select * from gesamt_stat gs " +
+                 " where gs.datum = (select max(sub.datum) from gesamt_stat sub) " +
+                 "   and gs.bundesland != 'österreich' ;", nativeQuery = true)
+  List<GesamtStat> findLatestGesamtStatDataForBundeslaender();
 }

@@ -124,4 +124,9 @@ public class KrankenhausStatServiceImpl implements StatService, KrankenhausStatS
   public List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland) {
     return krankenhausStatRepository.findKrankenhausStatDataByBundesland(bundesland);
   }
+
+  @Override
+  public List<KrankenhausStat> findLatestKrankenhausStatDataForBundeslaender() {
+    return krankenhausStatRepository.findLatestKrankenhausStatDataForBundeslaender() ;
+  }
 }

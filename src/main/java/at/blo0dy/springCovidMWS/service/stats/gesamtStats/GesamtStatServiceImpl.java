@@ -7,7 +7,6 @@ import at.blo0dy.springCovidMWS.utils.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -115,6 +114,22 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   }
 
   @Override
+  public List<GesamtStat> findLatestGesamtStatDataForBundeslaender() {
+    return gesamtStatRepository.findLatestGesamtStatDataForBundeslaender();
+  }
+
+  @Override
+  public List<GesamtStat> findGesamtStatData() {
+    return gesamtStatRepository.findGesamtStatData() ;
+  }
+
+  @Override
+  public List<GesamtStat> findGesamtStatDataByBundesland(String bundesland) {
+    return gesamtStatRepository.findGesamtStatDataByBundesland(bundesland);
+  }
+
+
+  @Override
   public GesamtStat findLastOccurenceByBundesland(List<GesamtStat> statList, String bundesland) {
     for ( int i = statList.size() - 1;  i >= 0; i-- ) {
       if (statList.get(i).getBundesland().equals(bundesland)) {
@@ -125,6 +140,7 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   }
 
 
+  // Old stuff: only just for BeispielPage:
   @Override
   public Map<Date, Integer> findNeueFaelleByBundesland(String bundesland) {
     List<Object[]> myList =  gesamtStatRepository.findNeueFaelleByBundesland(bundesland.toLowerCase());
@@ -146,16 +162,5 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
     }
     return data ;
   }
-
-  @Override
-  public List<GesamtStat> findGesamtStatData() {
-    return gesamtStatRepository.findGesamtStatData() ;
-  }
-
-  @Override
-  public List<GesamtStat> findGesamtStatDataByBundesland(String bundesland) {
-    return gesamtStatRepository.findGesamtStatDataByBundesland(bundesland);
-  }
-
 
 }

@@ -21,4 +21,10 @@ public interface KrankenhausStatRepository extends JpaRepository<KrankenhausStat
           " where ks.bundesland = ?1 ; ", nativeQuery = true)
   List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland);
 
+
+
+  @Query(value = "select * from krankenhaus_stat ks " +
+          " where ks.datum = (select max(sub.datum) from krankenhaus_stat sub) " +
+          "   and ks.bundesland != 'österreich' ;", nativeQuery = true)
+  List<KrankenhausStat> findLatestKrankenhausStatDataForBundeslaender();
 }

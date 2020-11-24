@@ -3,6 +3,7 @@ package at.blo0dy.springCovidMWS.config;
 import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.model.KrankenhausStat;
 import at.blo0dy.springCovidMWS.service.stats.StatService;
+import at.blo0dy.springCovidMWS.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -27,12 +28,12 @@ public class SchedulerConfig {
 
   @Scheduled(fixedDelay = 1000 * 60 * 60)
   public void runFileHandlingScheduler() {
-    //FileUtils.checkAndCreateFolder(GesamtStat.FILEPATH);
-    //FileUtils.saveDataFile(GesamtStat.FETCHURL, GesamtStat.FILEPATH);
+    FileUtils.checkAndCreateFolder(GesamtStat.FILEPATH);
+    FileUtils.saveDataFile(GesamtStat.FETCHURL, GesamtStat.FILEPATH);
     gesamtStatService.initializeCSV(GesamtStat.FILEPATH);
 
-    //FileUtils.checkAndCreateFolder(KrankenhausStat.FILEPATH);
-    //FileUtils.saveDataFile(KrankenhausStat.FETCHURL, KrankenhausStat.FILEPATH);
+    FileUtils.checkAndCreateFolder(KrankenhausStat.FILEPATH);
+    FileUtils.saveDataFile(KrankenhausStat.FETCHURL, KrankenhausStat.FILEPATH);
     krankenhausStatService.initializeCSV(KrankenhausStat.FILEPATH);
   }
 }

@@ -25,19 +25,22 @@ public class KrankenhausStatController {
   }
 
 
-  @GetMapping({"/v1/", "/v1"})
+  @GetMapping("/v1/getData")
   public List<KrankenhausStat> findGesamtStatData() {
     return krankenhausStatService.findKrankenhausStatData() ;
   }
 
 
-  @GetMapping("/v1/{bundesland}")
+  @GetMapping("/v1/getData/{bundesland}")
   public List<KrankenhausStat> findGesamtStatDataByBundesland(@PathVariable("bundesland") String bundesland) {
     return krankenhausStatService.findKrankenhausStatDataByBundesland(bundesland) ;
   }
 
 
-
+  @GetMapping("v1/getLatestDataBundeslaender")
+  public List<KrankenhausStat> findLatestKrankenhausStatDataForBundeslaender() {
+    return krankenhausStatService.findLatestKrankenhausStatDataForBundeslaender();
+  }
 
 
 

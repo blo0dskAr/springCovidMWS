@@ -18,4 +18,6 @@ public interface GesamtStatService {
 
   GesamtStat findLastOccurenceByBundesland(List<GesamtStat> statlist, String bundesland);
 
+  List<GesamtStat> findLatestGesamtStatDataForBundeslaender();
+
 }
