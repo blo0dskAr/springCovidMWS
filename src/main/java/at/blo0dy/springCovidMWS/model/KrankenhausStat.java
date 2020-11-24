@@ -35,12 +35,22 @@ public class KrankenhausStat {
   private int fzHospFree;
   @Column(name = "fz_icu_free")
   private int fzIcuFree;
+  @Column(name = "diff_tests")
+  int diffTests = 0;
+  @Column(name = "diff_fz_hosp")
+  int diffFzHosp = 0;
+  @Column(name = "diff_fz_icu")
+  int diffFzIcu = 0;
+  @Column(name = "diff_hosp_gesamt")
+  int hospGesamt = 0;
+  @Column(name = "diff_icu_gesamt")
+  int icuGesamt = 0;
 
   public static final Path FILEPATH = Paths.get("H:/covidApp/CovidFallzahlen.csv");
   public static final Path FILENAME = FILEPATH.getFileName();
   public static final String FETCHURL= "https://covid19-dashboard.ages.at/data/" + FILENAME;
 
-  public KrankenhausStat(Date datum, String bundesland, int testsGesamt, int fzHosp, int fzIcu, int fzHospFree, int fzIcuFree) {
+  public KrankenhausStat(Date datum, String bundesland, int testsGesamt, int fzHosp, int fzIcu, int fzHospFree, int fzIcuFree, int diffTests, int diffFzHosp, int diffFzIcu, int hospGesamt, int icuGesamt) {
     this.datum = datum;
     this.bundesland = bundesland;
     this.testsGesamt = testsGesamt;
@@ -48,5 +58,10 @@ public class KrankenhausStat {
     this.fzIcu = fzIcu;
     this.fzHospFree = fzHospFree;
     this.fzIcuFree = fzIcuFree;
+    this.diffTests = diffTests;
+    this.diffFzHosp = diffFzHosp;
+    this.diffFzIcu = diffFzIcu;
+    this.hospGesamt = hospGesamt;
+    this.icuGesamt = icuGesamt;
   }
 }

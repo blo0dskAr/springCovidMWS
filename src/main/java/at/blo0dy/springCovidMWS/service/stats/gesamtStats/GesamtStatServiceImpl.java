@@ -113,10 +113,10 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   }
 
   @Override
-  public GesamtStat findLastOccurenceByBundesland(List<GesamtStat> statlist, String bundesland) {
-    for ( int i = statlist.size() - 1;  i >= 0; i-- ) {
-      if (statlist.get(i).getBundesland().equals(bundesland)) {
-        return statlist.get(i);
+  public GesamtStat findLastOccurenceByBundesland(List<GesamtStat> statList, String bundesland) {
+    for ( int i = statList.size() - 1;  i >= 0; i-- ) {
+      if (statList.get(i).getBundesland().equals(bundesland)) {
+        return statList.get(i);
       }
     }
     return null;

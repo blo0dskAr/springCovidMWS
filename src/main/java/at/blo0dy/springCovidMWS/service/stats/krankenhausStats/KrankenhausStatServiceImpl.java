@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Service("krankenhausStatService")
-public class KrankenhausStatServiceImpl implements StatService {
+public class KrankenhausStatServiceImpl implements StatService, KrankenhausStatService {
 
   KrankenhausStatRepository krankenhausStatRepository;
 
@@ -38,11 +38,20 @@ public class KrankenhausStatServiceImpl implements StatService {
   @Override
   public void initializeCSV(Path filePath) {
 
+    int testsGesamt, fzHosp, fzIcu, fzHospFree, fzIcuFree;
+    int diffTests = 0;
+    int diffFzHosp = 0;
+    int diffFzIcu = 0;
+    int hospGesamt = 0;
+    int icuGesamt = 0;
+
+    KrankenhausStat oldKrankenhausStat;
+
     DateTimeFormatter formatterwithTime = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     final String[] headers = {"Meldedat","TestGesamt", "MeldeDatum", "FZHosp", "FZICU",	"FZHospFree",	"FZICUFree", "BundeslandID", "Bundesland"};
 
     List<KrankenhausStat> statList = new ArrayList<>();
-    Date datum = new Date();
+    Date datum = null;
 
     try {
       Iterable<CSVRecord> records = FileUtils.readSemikolonSeparatedCSV(filePath,headers);
@@ -54,14 +63,28 @@ public class KrankenhausStatServiceImpl implements StatService {
           log.warn("ParseException caught:");
           log.error(e.getMessage());
         }
-        int testsGesamt = Integer.parseInt(record.get("TestGesamt"));
-        int fzHosp = Integer.parseInt(record.get("FZHosp"));
-        int fzIcu = Integer.parseInt(record.get("FZICU"));
-        int fzHospFree = Integer.parseInt(record.get("FZHospFree"));
-        int fzIcuFree = Integer.parseInt(record.get("FZICUFree"));
-        String bundesland = record.get("Bundesland");
+        testsGesamt = Integer.parseInt(record.get("TestGesamt"));
+        fzHosp = Integer.parseInt(record.get("FZHosp"));
+        fzIcu = Integer.parseInt(record.get("FZICU"));
+        fzHospFree = Integer.parseInt(record.get("FZHospFree"));
+        fzIcuFree = Integer.parseInt(record.get("FZICUFree"));
+        String bundesland = record.get("Bundesland").toLowerCase();
+        if (bundesland.equals("alle")) {
+          bundesland = "österreich";
+        }
 
-        statList.add(new KrankenhausStat(datum, bundesland, testsGesamt, fzHosp, fzIcu, fzHospFree, fzIcuFree ));
+        try {
+          oldKrankenhausStat = findLastOccurenceByBundesland(statList, bundesland);
+          diffTests = testsGesamt - oldKrankenhausStat.getTestsGesamt();
+          diffFzHosp = fzHosp - oldKrankenhausStat.getFzHosp();
+          diffFzIcu = fzIcu - oldKrankenhausStat.getFzIcu();
+          hospGesamt = fzHosp + fzHospFree;
+          icuGesamt = fzIcu + fzIcuFree;
+        } catch (NullPointerException e) {
+          log.info("Noch keine Datensätze für Bundesland(" + bundesland + ") gefunden. Default=0 wird verwendet");
+        }
+
+        statList.add(new KrankenhausStat(datum, bundesland, testsGesamt, fzHosp, fzIcu, fzHospFree, fzIcuFree, diffTests, diffFzHosp, diffFzIcu, hospGesamt, icuGesamt ));
       }
     } catch (IOException e) {
       log.warn("IOException caught:");
@@ -80,5 +103,14 @@ public class KrankenhausStatServiceImpl implements StatService {
     statList.forEach(gesamtStat -> krankenhausStatRepository.save(gesamtStat));
     log.debug("KrankenhausStat-CSV-Verarbeitung abgeschlossen.");
 
+  }
+
+  public KrankenhausStat findLastOccurenceByBundesland(List<KrankenhausStat> statList, String bundesland) {
+    for ( int i = statList.size() - 1;  i >= 0; i-- ) {
+      if (statList.get(i).getBundesland().equals(bundesland)) {
+        return statList.get(i);
+      }
+    }
+    return null;
   }
 }
