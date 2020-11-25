@@ -48,10 +48,6 @@ public class KrankenhausStat {
   @Column(name = "diff_icu_gesamt")
   int icuGesamt ;
 
-  public static final Path FILEPATH = Paths.get("H:/covidApp/CovidFallzahlen.csv");
-  public static final Path FILENAME = FILEPATH.getFileName();
-  public static final String FETCHURL= "https://covid19-dashboard.ages.at/data/" + FILENAME;
-
   public KrankenhausStat(Date datum, String bundesland, int testsGesamt, int fzHosp, int fzIcu, int fzHospFree, int fzIcuFree, int diffTests, int diffFzHosp, int diffFzIcu, int hospGesamt, int icuGesamt) {
     this.datum = datum;
     this.bundesland = bundesland;

@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service("gesamtStatService")
@@ -43,7 +42,7 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
 
     GesamtStat oldGesamtStat;
 
-    DateTimeFormatter formatterwithTime = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+//    DateTimeFormatter formatterwithTime = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
     final String[] headers = { "Time",	"Bundesland",	"BundeslandID",	"AnzEinwohner",	"AnzahlFaelle",	"AnzahlFaelleSum",
             "AnzahlFaelle7Tage",	"SiebenTageInzidenzFaelle",	"AnzahlTotTaeglich",	"AnzahlTotSum",
             "AnzahlGeheiltTaeglich",	"AnzahlGeheiltSum" };
