@@ -11,7 +11,7 @@
 	<groupId>at.blo0dy</groupId>
 	<artifactId>springCovidMWS</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>springCovidMWS</name>
 	<description>Spring Rest backend for Covid Data</description>
 

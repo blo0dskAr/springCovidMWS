@@ -43,7 +43,7 @@ public class SchedulerConfig {
     gesamtStatService.initializeCSV(gesamtStatPath);
 
     FileUtils.checkAndCreateFolder(krankenhausStatPath);
-    FileUtils.saveDataFile(propertyConfig.getGesamtStatfetchURL(), krankenhausStatPath);
+    FileUtils.saveDataFile(propertyConfig.getKrankenhausStatfetchURL(), krankenhausStatPath);
     krankenhausStatService.initializeCSV(krankenhausStatPath);
   }
 }

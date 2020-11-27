@@ -3,10 +3,12 @@ package at.blo0dy.springCovidMWS.repository;
 import at.blo0dy.springCovidMWS.model.KrankenhausStat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface KrankenhausStatRepository extends JpaRepository<KrankenhausStat, Long> {
 
   @Query(value = "select max(ks.datum) from krankenhaus_stat ks",
