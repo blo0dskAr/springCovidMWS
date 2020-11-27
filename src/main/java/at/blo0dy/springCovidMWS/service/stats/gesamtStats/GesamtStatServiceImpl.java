@@ -95,14 +95,16 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
     }
     log.debug("CSV geparsed. " + statList.size() + " Datensaetze geladen. Persistiere");
 
-    Date latestSavedDate = findLatestSavedDatum();
-    if (latestSavedDate == null) {
-      log.debug("Keine GesamtStat-Datensaetze in DB gefunden. Speichere alle...");
-    } else {
-      log.debug("Aktuellster GesamtStat-Datensatz in DB hat Datum: " + latestSavedDate.toString() + ". CSV wird gefiltert..");
-      statList.removeIf(gesamtStat -> gesamtStat.getDatum().before(latestSavedDate) || gesamtStat.getDatum().equals(latestSavedDate));
-      log.debug(statList.size() + " Datensätze verbleiben zum peristieren");
-    }
+    // zahlt sich gar ned aus, die daten aendern sich oft und weit rückwirkend, also alles neu...
+//    Date latestSavedDate = findLatestSavedDatum();
+//    if (latestSavedDate == null) {
+//      log.debug("Keine GesamtStat-Datensaetze in DB gefunden. Speichere alle...");
+//    } else {
+//      log.debug("Aktuellster GesamtStat-Datensatz in DB hat Datum: " + latestSavedDate.toString() + ". CSV wird gefiltert..");
+//      statList.removeIf(gesamtStat -> gesamtStat.getDatum().before(latestSavedDate) || gesamtStat.getDatum().equals(latestSavedDate));
+//      log.debug(statList.size() + " Datensätze verbleiben zum peristieren");
+//    }
+    gesamtStatRepository.deleteAll();
     statList.forEach(gesamtStat -> gesamtStatRepository.save(gesamtStat));
     log.debug("GesamtStat-CSV-Verarbeitung abgeschlossen.");
   }

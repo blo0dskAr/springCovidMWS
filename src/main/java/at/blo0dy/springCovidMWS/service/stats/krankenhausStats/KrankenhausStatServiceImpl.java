@@ -93,14 +93,16 @@ public class KrankenhausStatServiceImpl implements StatService, KrankenhausStatS
     }
     log.debug("CSV geparsed. " + statList.size() + " Datensaetze geladen. Persistiere");
 
-    Date latestSavedDate = findLatestSavedDatum();
-    if (latestSavedDate == null) {
-      log.debug("Keine KrankenhausStat-Datensaetze in DB gefunden. Speichere alle...");
-    } else {
-      log.debug("Aktuellster KrankenhausStat-Datensatz in DB hat Datum: " + latestSavedDate.toString() + ". CSV wird gefiltert..");
-      statList.removeIf(gesamtStat -> gesamtStat.getDatum().before(latestSavedDate) || gesamtStat.getDatum().equals(latestSavedDate));
-      log.debug(statList.size() + " Datensätze verbleiben zum peristieren");
-    }
+    // Historische Daten aendern sich zu oft, zahlt sich ned aus
+//    Date latestSavedDate = findLatestSavedDatum();
+//    if (latestSavedDate == null) {
+//      log.debug("Keine KrankenhausStat-Datensaetze in DB gefunden. Speichere alle...");
+//    } else {
+//      log.debug("Aktuellster KrankenhausStat-Datensatz in DB hat Datum: " + latestSavedDate.toString() + ". CSV wird gefiltert..");
+//      statList.removeIf(gesamtStat -> gesamtStat.getDatum().before(latestSavedDate) || gesamtStat.getDatum().equals(latestSavedDate));
+//      log.debug(statList.size() + " Datensätze verbleiben zum peristieren");
+//    }
+    krankenhausStatRepository.deleteAll();
     statList.forEach(gesamtStat -> krankenhausStatRepository.save(gesamtStat));
     log.debug("KrankenhausStat-CSV-Verarbeitung abgeschlossen.");
 
