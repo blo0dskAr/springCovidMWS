@@ -26,7 +26,6 @@ public class KrankenhausStatController {
 
   @GetMapping("/v1/getData")
   public List<KrankenhausStat> findGesamtStatData() {
-    List<KrankenhausStat> mylist = krankenhausStatService.findKrankenhausStatData();
     return krankenhausStatService.findKrankenhausStatData() ;
   }
 
