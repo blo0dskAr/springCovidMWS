@@ -141,7 +141,7 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   }
 
 
-  // Old stuff: only just for BeispielPage:
+  // Old stuff: just used for BeispielPage:
   @Override
   public Map<Date, Integer> findNeueFaelleByBundesland(String bundesland) {
     List<Object[]> myList =  gesamtStatRepository.findNeueFaelleByBundesland(bundesland.toLowerCase());
