@@ -77,6 +77,10 @@ public class KrankenhausStatServiceImpl implements StatService, KrankenhausStatS
         try {
           oldKrankenhausStat = findLastOccurenceByBundesland(statList, bundesland);
           diffTests = testsGesamt - oldKrankenhausStat.getTestsGesamt();
+          // teils korrekturen bei den Tests: Führt zu Minus Ergebnissen (meist wenn nachgeliefert)
+          if (diffTests < 0) {
+            diffTests = 0;
+          }
           diffFzHosp = fzHosp - oldKrankenhausStat.getFzHosp();
           diffFzIcu = fzIcu - oldKrankenhausStat.getFzIcu();
           hospGesamt = fzHosp + fzHospFree;

@@ -34,6 +34,7 @@ public class GesamtStatController {
 
   @GetMapping("/v1/getData")
   public List<GesamtStat> findGesamtStatData() {
+    List<GesamtStat> myStat = gesamtStatService.findGesamtStatData();
     return gesamtStatService.findGesamtStatData() ;
   }
 

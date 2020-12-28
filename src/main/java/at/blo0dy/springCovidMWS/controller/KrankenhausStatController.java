@@ -1,6 +1,5 @@
 package at.blo0dy.springCovidMWS.controller;
 
-import at.blo0dy.springCovidMWS.model.GesamtStat;
 import at.blo0dy.springCovidMWS.model.KrankenhausStat;
 import at.blo0dy.springCovidMWS.service.stats.krankenhausStats.KrankenhausStatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ public class KrankenhausStatController {
 
   @GetMapping("/v1/getData")
   public List<KrankenhausStat> findGesamtStatData() {
+    List<KrankenhausStat> mylist = krankenhausStatService.findKrankenhausStatData();
     return krankenhausStatService.findKrankenhausStatData() ;
   }
 

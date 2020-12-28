@@ -23,7 +23,7 @@ public class KrankenhausStat {
 
   @Column(name = "datum")
   @Temporal(TemporalType.DATE)
-  @JsonFormat(pattern = "dd.MM.yyyy")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, locale = "de-AT", timezone = "Europe/Vienna" , pattern = "dd.MM.yyyy")
   private Date datum;
   @Column(name = "bundesland")
   private String bundesland;
