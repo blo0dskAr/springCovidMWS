@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -127,8 +128,8 @@ public class KrankenhausStatServiceImpl implements StatService, KrankenhausStatS
   }
 
   @Override
-  public List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland) {
-    return krankenhausStatRepository.findKrankenhausStatDataByBundesland(bundesland);
+  public List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland, LocalDate startDate, LocalDate endDate) {
+    return krankenhausStatRepository.findKrankenhausStatDataByBundesland(bundesland, startDate, endDate);
   }
 
   @Override

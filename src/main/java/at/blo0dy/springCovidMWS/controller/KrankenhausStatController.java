@@ -4,11 +4,9 @@ import at.blo0dy.springCovidMWS.model.KrankenhausStat;
 import at.blo0dy.springCovidMWS.service.stats.krankenhausStats.KrankenhausStatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -31,8 +29,10 @@ public class KrankenhausStatController {
 
 
   @GetMapping("/v1/getData/{bundesland}")
-  public List<KrankenhausStat> findGesamtStatDataByBundesland(@PathVariable("bundesland") String bundesland) {
-    return krankenhausStatService.findKrankenhausStatDataByBundesland(bundesland) ;
+  public List<KrankenhausStat> findGesamtStatDataByBundesland(@PathVariable("bundesland") String bundesland,
+                                                              @RequestParam("startDate") LocalDate startDate,
+                                                              @RequestParam("endDate") LocalDate endDate) {
+    return krankenhausStatService.findKrankenhausStatDataByBundesland(bundesland, startDate, endDate) ;
   }
 
 
