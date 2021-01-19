@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,10 @@ public interface GesamtStatRepository extends CrudRepository<GesamtStat, Long> {
 
 
   @Query(value ="select * from gesamt_stat gs " +
-                " where gs.bundesland = ?1 ; ", nativeQuery = true)
-  List<GesamtStat> findGesamtStatDataByBundesland(String bundesland);
+                " where gs.bundesland = ?1 " +
+                "   and gs.datum between ?2" +
+                "                    and ?3 ;", nativeQuery = true)
+  List<GesamtStat> findGesamtStatDataByBundesland(String bundesland, LocalDate startDate, LocalDate endDate);
 
 
   @Query(value = "select * from gesamt_stat gs " +

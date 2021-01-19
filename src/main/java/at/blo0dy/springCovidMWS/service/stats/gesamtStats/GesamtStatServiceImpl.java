@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service("gesamtStatService")
@@ -125,8 +126,8 @@ public class GesamtStatServiceImpl implements StatService, GesamtStatService {
   }
 
   @Override
-  public List<GesamtStat> findGesamtStatDataByBundesland(String bundesland) {
-    return gesamtStatRepository.findGesamtStatDataByBundesland(bundesland);
+  public List<GesamtStat> findGesamtStatDataByBundesland(String bundesland, LocalDate startDate, LocalDate endDate) {
+    return gesamtStatRepository.findGesamtStatDataByBundesland(bundesland, startDate, endDate);
   }
 
 
