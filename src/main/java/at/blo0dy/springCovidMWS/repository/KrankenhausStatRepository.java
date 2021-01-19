@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,8 +21,10 @@ public interface KrankenhausStatRepository extends JpaRepository<KrankenhausStat
 
 
   @Query(value ="select * from krankenhaus_stat ks " +
-          " where ks.bundesland = ?1 ; ", nativeQuery = true)
-  List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland);
+          " where ks.bundesland = ?1 " +
+          "   and ks.datum between ?2 " +
+          "                    and ?3 ;", nativeQuery = true)
+  List<KrankenhausStat> findKrankenhausStatDataByBundesland(String bundesland, LocalDate startDate, LocalDate endDate);
 
 
 

@@ -5,11 +5,9 @@ import at.blo0dy.springCovidMWS.service.stats.gesamtStats.GesamtStatServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +37,10 @@ public class GesamtStatController {
 
 
   @GetMapping("/v1/getData/{bundesland}")
-  public List<GesamtStat> findGesamtStatDataByBundesland(@PathVariable("bundesland") String bundesland) {
-    return gesamtStatService.findGesamtStatDataByBundesland(bundesland) ;
+  public List<GesamtStat> findGesamtStatDataByBundesland(@PathVariable("bundesland") String bundesland,
+                                                         @RequestParam("startDate") LocalDate startDate,
+                                                         @RequestParam("endDate") LocalDate endDate) {
+    return gesamtStatService.findGesamtStatDataByBundesland(bundesland, startDate, endDate) ;
   }
 
   @GetMapping("v1/getLatestDate")
